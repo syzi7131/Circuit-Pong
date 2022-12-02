@@ -1,0 +1,373 @@
+
+#include <Adafruit_NeoPixel.h>
+
+int S1 = 2;  //2 = pin
+int S2 = 3;  //3 = pin
+int S3 = 4;  //4 = pin
+int S4 = 5;  //5 = pin
+int S5 = 6;  //6 = pin
+int S6 = 7;  //7 = pin
+int S7 = 8;
+int S8 = 9;
+int S9 = 10;
+int S10 = 11;
+int S11 = 12; //party cup
+
+bool BALL1;
+bool BALL2;
+bool BALL3;
+bool BALL4;
+bool BALL5;
+bool BALL6;
+bool BALL7;
+bool BALL8;
+bool BALL9;
+bool BALL10;
+bool BALL11;
+
+#define PIN        13 // On Trinket or Gemma, suggest changing this to 1
+
+#define NUMPIXELS 33 // Popular NeoPixel ring size
+
+Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+
+void showStrip() {
+#ifdef ADAFRUIT_NEOPIXEL_H
+  // NeoPixel
+  pixels.show();
+#endif
+#ifndef ADAFRUIT_NEOPIXEL_H
+  // FastLED
+  FastLED.show();
+#endif
+}
+
+void setPixel(int Pixel, byte red, byte green, byte blue) {
+#ifdef ADAFRUIT_NEOPIXEL_H
+  // NeoPixel
+  pixels.setPixelColor(Pixel, pixels.Color(red, green, blue));
+#endif
+#ifndef ADAFRUIT_NEOPIXEL_H
+  // FastLED
+  leds[Pixel].r = red;
+  leds[Pixel].g = green;
+  leds[Pixel].b = blue;
+#endif
+}
+void setAll(byte red, byte green, byte blue) {
+  for (int i = 0; i < NUMPIXELS; i++ ) {
+    setPixel(i, red, green, blue);
+  }
+  showStrip();
+}
+void TwinkleRandom(int Count, int SpeedDelay, boolean OnlyOne) {
+  setAll(0, 0, 0);
+  for (int i = 0; i < Count; i++) {
+    setPixel(random(NUMPIXELS), random(0, 255), random(0, 255), random(0, 255));
+    showStrip();
+    delay(SpeedDelay);
+    if (OnlyOne) {
+      setAll(0, 0, 0);
+    }
+  }
+  delay(SpeedDelay);
+}
+
+void setup() {
+  // put your setup code here, to run once:
+
+  Serial.begin(9600);
+  pinMode(S1, INPUT);
+  pinMode(S2, INPUT);
+  pinMode(S3, INPUT);
+  pinMode(S4, INPUT);
+  pinMode(S5, INPUT);
+  pinMode(S6, INPUT);
+  pinMode(S7, INPUT);
+  pinMode(S8, INPUT);
+  pinMode(S9, INPUT);
+  pinMode(S10, INPUT);
+  pinMode(S11, INPUT);
+  pinMode(13, OUTPUT);
+  pixels.setBrightness(250);
+  for (int i = 0; i <= 33; i++) {
+    pixels.setPixelColor(i, pixels.Color(255, 0, 0));
+    pixels.show();
+  }
+  BALL1 = false;
+  BALL2 = false;
+  BALL3 = false;
+  BALL4 = false;
+  BALL5 = false;
+  BALL6 = false;
+  BALL7 = false;
+  BALL8 = false;
+  BALL9 = false;
+  BALL10 = false;
+  BALL11 = false;
+  //Set ALL BOOLS FALSE
+}
+void loop() {
+  int cupOne;
+  int cupTwo;
+  int cupThree;
+  int cupFour;
+  int cupFive;
+  int cupSix;
+  int cupSeven;
+  int cupEight;
+  int cupNine;
+  int cupTen;
+  int cupParty;
+  cupOne = digitalRead(S1);
+  cupTwo = digitalRead(S2);
+  cupThree = digitalRead(S3);
+  cupFour = digitalRead(S4);
+  cupFive = digitalRead(S5);
+  cupSix = digitalRead(S6);
+  cupSeven = digitalRead(S7);
+  cupEight = digitalRead(S8);
+  cupNine = digitalRead(S9);
+  cupTen = digitalRead(S10);
+  cupParty = digitalRead(S11);
+
+  //Initial Start Setup
+  Serial.print("CUP ONE = ");
+  Serial.println(cupOne);
+  Serial.print("Cup Two = ");
+  Serial.println(cupTwo);
+  Serial.print("Cup Three = ");
+  Serial.println(cupThree);
+  Serial.print("Cup Four = ");
+  Serial.println(cupFour);
+  Serial.print("Cup Five = ");
+  Serial.println(cupFive);
+  Serial.print("CUP Six = ");
+  Serial.println(cupSix);
+  Serial.print("Cup Seven = ");
+  Serial.println(cupSeven);
+  Serial.print("Cup Eight = ");
+  Serial.println(cupEight);
+  Serial.print("Cup Nine = ");
+  Serial.println(cupNine);
+  Serial.print("Cup Ten = ");
+  Serial.println(cupTen);
+  Serial.print("Cup Party = ");
+  Serial.println(cupParty);
+//--------------------------------------------------------------------
+  if (cupOne == 0) { //If ball lands in cup turn green
+    BALL1 = true; //Keeps the light green even after ball is removed
+  }
+  else if (BALL1 == false) {
+    for (int i = 0; i < 3; i++) {
+      pixels.setPixelColor(i, pixels.Color(255, 0, 0));
+      pixels.show();
+    }
+  }
+  if (BALL1)//Keep LED green if cup made
+  {
+    pixels.setPixelColor(0, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(1, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(2, pixels.Color(0, 255, 0));
+    pixels.show();
+    BALL1 = true;
+  }
+//--------------------------------------------------------------------
+  if (cupTwo == 0) { //If ball lands in cup turn green
+    BALL2 = true; //Keeps the light green even after ball is removed
+
+  }
+  else if (BALL2 == false) {
+    for (int i = 3; i < 6; i++) {
+      pixels.setPixelColor(i, pixels.Color(255, 0, 0));
+      pixels.show();
+    }
+  }
+  if (BALL2)//Keep LED green if cup made //ONLY RUNS IF LANDED FIRST*****
+  {
+    pixels.setPixelColor(3, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(4, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(5, pixels.Color(0, 255, 0));
+    pixels.show();
+  }
+ //------------------------------------------------------------------
+  if (cupThree == 0) { //If ball lands in cup turn green
+    BALL3 = true; //Keeps the light green even after ball is removed
+  }
+  else if (BALL3 == false) {
+    for (int i = 6; i < 9; i++) {
+      pixels.setPixelColor(i, pixels.Color(255, 0, 0));
+      pixels.show();
+    }
+  }
+  if (BALL3)//Keep LED green if cup made
+  {
+    pixels.setPixelColor(6, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(7, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(8, pixels.Color(0, 255, 0));
+    pixels.show();
+    BALL3 = true;
+  }
+//---------------------------------------------------------------
+  if (cupFour == 0) { //If ball lands in cup turn green
+    BALL4 = true; //Keeps the light green even after ball is removed
+  }
+  else if (BALL4 == false) {
+    for (int i = 9; i < 12; i++) {
+      pixels.setPixelColor(i, pixels.Color(255, 0, 0));
+      pixels.show();
+    }
+  }
+  if (BALL4)//Keep LED green if cup made
+  {
+    pixels.setPixelColor(9, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(10, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(11, pixels.Color(0, 255, 0));
+    pixels.show();
+    BALL4 = true;
+  }
+//------------------------------------------------------------
+  if (cupFive == 0) { //If ball lands in cup turn green
+    BALL5 = true; //Keeps the light green even after ball is removed
+  }
+  else if (BALL5 == false) {
+    for (int i = 12; i < 15; i++) {
+      pixels.setPixelColor(i, pixels.Color(255, 0, 0));
+      pixels.show();
+    }
+  }
+  if (BALL5)//Keep LED green if cup made
+  {
+    pixels.setPixelColor(12, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(13, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(14, pixels.Color(0, 255, 0));
+    pixels.show();
+    BALL5 = true;
+  }
+//--------------------------------------------------------  
+  if (cupSix == 0) { //If ball lands in cup turn green
+    BALL6 = true; //Keeps the light green even after ball is removed
+  }
+  else if (BALL6 == false) {
+    for (int i = 15; i < 18; i++) {
+      pixels.setPixelColor(i, pixels.Color(255, 0, 0));
+      pixels.show();
+    }
+  }
+  if (BALL6)//Keep LED green if cup made
+  {
+    pixels.setPixelColor(15, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(16, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(17, pixels.Color(0, 255, 0));
+    pixels.show();
+    BALL6 = true;
+  }
+//-------------------------------------------------
+  if (cupSeven == 0) { //If ball lands in cup turn green
+    BALL7 = true; //Keeps the light green even after ball is removed
+  }
+  else if (BALL7 == false) {
+    for (int i = 18; i < 21; i++) {
+      pixels.setPixelColor(i, pixels.Color(255, 0, 0));
+      pixels.show();
+    }
+  }
+  if (BALL7)//Keep LED green if cup made
+  {
+    pixels.setPixelColor(18, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(19, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(20, pixels.Color(0, 255, 0));
+    pixels.show();
+    BALL7 = true;
+  }
+//-------------------------------------------------
+  if (cupEight == 0) { //If ball lands in cup turn green
+    BALL8 = true; //Keeps the light green even after ball is removed
+  }
+  else if (BALL8 == false) {
+    for (int i = 21; i < 24; i++) {
+      pixels.setPixelColor(i, pixels.Color(255, 0, 0));
+      pixels.show();
+    }
+  }
+  if (BALL8)//Keep LED green if cup made
+  {
+    pixels.setPixelColor(21, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(22, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(23, pixels.Color(0, 255, 0));
+    pixels.show();
+    BALL8 = true;
+  }
+//-------------------------------------------------
+  if (cupNine == 0) { //If ball lands in cup turn green
+    BALL9 = true; //Keeps the light green even after ball is removed
+  }
+  else if (BALL9 == false) {
+    for (int i = 24; i < 27; i++) {
+      pixels.setPixelColor(i, pixels.Color(255, 0, 0));
+      pixels.show();
+    }
+  }
+  if (BALL9)//Keep LED green if cup made
+  {
+    pixels.setPixelColor(24, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(25, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(26, pixels.Color(0, 255, 0));
+    pixels.show();
+    BALL9 = true;
+  }
+//-------------------------------------------------
+  if (cupTen == 0) { //If ball lands in cup turn green
+    BALL10 = true; //Keeps the light green even after ball is removed
+  }
+  else if (BALL10 == false) {
+    for (int i = 27; i < 30; i++) {
+      pixels.setPixelColor(i, pixels.Color(255, 0, 0));
+      pixels.show();
+    }
+  }
+  if (BALL10)//Keep LED green if cup made
+  {
+    pixels.setPixelColor(27, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(28, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(29, pixels.Color(0, 255, 0));
+    pixels.show();
+    BALL10 = true;
+  }
+ //-------------------------------------------------
+  if (cupParty == 0) { //If ball lands in cup turn green
+    BALL11 = true; //Keeps the light green even after ball is removed
+  }
+  else if (BALL11 == false) {
+    for (int i = 30; i < 33; i++) {
+      pixels.setPixelColor(i, pixels.Color(255, 0, 0));
+      pixels.show();
+    }
+  }
+  if (BALL11)//Keep LED green if cup made
+  {
+    pixels.setPixelColor(30, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(31, pixels.Color(0, 255, 0));
+    pixels.setPixelColor(32, pixels.Color(0, 255, 0));
+    pixels.show();
+    BALL11 = true;
+    TwinkleRandom(20,10,false);
+    delay(1000);
+  }
+  if (BALL1 && BALL2 && BALL3 && BALL4 && BALL5 && BALL6 && BALL7 && BALL8 && BALL9 && BALL10 && BALL11) {//if all bools are true
+    delay(1000);
+    TwinkleRandom(1500, 10, false);
+    delay(1000);
+    BALL1 = false;
+    BALL2 = false;
+    BALL3 = false;
+    BALL4 = false;
+    BALL5 = false;
+    BALL6 = false;
+    BALL7 = false;
+    BALL8 = false;
+    BALL9 = false;
+    BALL10 = false;
+    BALL11 = false;
+  }
+}
